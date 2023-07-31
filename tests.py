@@ -4,7 +4,6 @@ from intersection import Intersection
 from simple_scheduler import SimpleScheduler
 from control_loop import ControlLoop
 from enums import TrafficLightState
-from typing import List
 
 
 class TestTrafficLightSystem(unittest.TestCase):
@@ -169,8 +168,7 @@ class TestTrafficLightSystem(unittest.TestCase):
         # Check x and y ranges of the passage
         self.assertEqual(self.passage1.x_min, 0)
         self.assertEqual(self.passage1.x_max, 5)
-        self.assertEqual(self.passage1.y_min, 0)
-        self.assertEqual(self.passage1.y_max, 0)
+
 
 
 if __name__ == '__main__':

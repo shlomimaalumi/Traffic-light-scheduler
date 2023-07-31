@@ -1,6 +1,5 @@
-import math
 from traffic_light import TrafficLight  # Importing TrafficLight for type hinting
-from typing import List
+from typing import List, Optional
 from enums import TrafficLightState
 
 
@@ -12,7 +11,7 @@ class Intersection:
             traffic_lights (list[TrafficLight]): A list of TrafficLight objects representing the traffic lights at the intersection.
         """
         self.traffic_lights = traffic_lights
-        self.currennt_green_traffic_lighters=[]
+        self.currennt_green_traffic_lighters = []
         self.currennt_main_traffic_light = None
 
     def get_current_green_light(self) -> TrafficLight or None:
@@ -30,6 +29,8 @@ class Intersection:
             light_traffic (TrafficLight): The traffic light to change the state of.
             state (TrafficLightState): The new state for the traffic light.
         """
+        if light_traffic not in self.traffic_lights:
+            raise ValueError('Not a valid traffic light to switch to red.')
         light_traffic.set_state(state)
 
     def greens_on_for(self, lights_to_green: List[TrafficLight], main_light_traffic: TrafficLight, duration: float):
@@ -50,7 +51,7 @@ class Intersection:
         """Set the currently active green traffic light and its associated traffic lights to red."""
         for light in self.currennt_green_traffic_lighters:
             light.red_on()
-        self.currennt_green_traffic_lighters=[]
+        self.currennt_green_traffic_lighters = []
 
     def red_on(self, light_traffic: TrafficLight):
         """Set a traffic light to red.
@@ -106,7 +107,7 @@ class Intersection:
         """
         return self.traffic_lights
 
-    def get_remaining_time(self) -> float or None:
+    def get_remaining_time(self) -> Optional[float]:
         """Get the remaining time for the current green traffic light.
 
         Returns:
@@ -114,5 +115,5 @@ class Intersection:
             Returns negative infinity if there's no current green light.
         """
         if not self.currennt_main_traffic_light:
-            return None
+            return
         return self.currennt_main_traffic_light.get_remaining_duration()

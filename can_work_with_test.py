@@ -1,5 +1,4 @@
 import unittest
-from typing import Tuple
 from passage import Passage
 from traffic_light import TrafficLight
 
@@ -44,7 +43,6 @@ class TestTrafficLight(unittest.TestCase):
         # Traffic light 1 and traffic light 4 have fully contained passages,
         # so they should not be able to work together
         self.assertFalse(self.traffic_light1.can_work_with(self.traffic_light4))
-
 
     def test_can_work_with_complex_overlapping_passages(self):
         # Traffic light 2 and traffic light 3 have complex overlapping passages,

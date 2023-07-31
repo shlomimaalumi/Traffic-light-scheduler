@@ -1,4 +1,3 @@
-import math
 import time
 from enums import TrafficLightState
 from passage import Passage
@@ -116,7 +115,8 @@ class TrafficLight:
                 bool: True if the lines intersect within the specified x-axis range, False otherwise.
             """
             # Check if the bounding boxes of the lines intersect in the x-axis range
-            if line1!=line2 and line1.bounds[0] <= x_max and line1.bounds[2] >= x_min and line2.bounds[0] <= x_max and line2.bounds[2] >= x_min:
+            if line1 != line2 and line1.bounds[0] <= x_max and line1.bounds[2] >= x_min \
+                    and line2.bounds[0] <= x_max and line2.bounds[2] >= x_min:
                 # Perform an intersection check between the lines
                 return line1.intersects(line2)
             return False
@@ -132,14 +132,3 @@ class TrafficLight:
                 if do_lines_intersect_in_x_range(line1, line2, x_min, x_max):
                     return False
         return True
-
-
-
-
-
-
-
-
-
-
-
