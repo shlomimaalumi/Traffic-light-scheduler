@@ -1,7 +1,7 @@
 import unittest
 from traffic_light import TrafficLight, Passage
 from intersection import Intersection
-from simple_scheduler import SimpleScheduler
+from random_scheduler import SimpleScheduler
 from control_loop import ControlLoop
 from enums import TrafficLightState
 
@@ -72,19 +72,19 @@ class TestTrafficLightSystem(unittest.TestCase):
     #     for _ in range(3):
     #         self.control_loop.run()
 
-    def test_intersection_intersection(self):
-        # Test if the traffic lights in the intersection can work together
-        self.assertTrue(self.traffic_light1.can_work_with(self.traffic_light2))
-
-        # Make traffic_light1 green for 3 seconds
-        self.intersection.greens_on_for([self.traffic_light1], self.traffic_light1, 3.0)
-
-
-        # Make traffic_light2 green for 2 seconds
-        self.intersection.greens_on_for([self.traffic_light2], self.traffic_light2, 2.0)
-
-        # Now, traffic_light1 should work with traffic_light2 again
-        self.assertTrue(self.traffic_light1.can_work_with(self.traffic_light2))
+    # def test_intersection_intersection(self):
+    #     # Test if the traffic lights in the intersection can work together
+    #     self.assertTrue(self.traffic_light1.can_work_with(self.traffic_light2))
+    #
+    #     # Make traffic_light1 green for 3 seconds
+    #     self.intersection.greens_on_for([self.traffic_light1], self.traffic_light1, 3.0)
+    #
+    #
+    #     # Make traffic_light2 green for 2 seconds
+    #     self.intersection.greens_on_for([self.traffic_light2], self.traffic_light2, 2.0)
+    #
+    #     # Now, traffic_light1 should work with traffic_light2 again
+    #     self.assertTrue(self.traffic_light1.can_work_with(self.traffic_light2))
 
     def test_intersection_get_current_green_light(self):
         # Initially, no green light

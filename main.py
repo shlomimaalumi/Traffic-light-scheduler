@@ -1,5 +1,5 @@
 from control_loop import ControlLoop
-from simple_scheduler import SimpleScheduler
+from random_scheduler import SimpleScheduler
 from intersection import Intersection
 from traffic_light import TrafficLight
 

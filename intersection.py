@@ -69,19 +69,6 @@ class Intersection:
         if self.currennt_main_traffic_light:
             self.red_on(self.currennt_main_traffic_light)
 
-    def decide_next_light(self) -> TrafficLight or None:
-        """Decide the next traffic light to switch on.
-
-        Raises:
-            ValueError: If no scheduler is set.
-
-        Returns:
-            TrafficLight or None: The next traffic light to switch on or None if no valid light is available.
-        """
-        if not self.scheduler:
-            raise ValueError('No scheduler set.')
-        return self.scheduler.get_next_traffic_light(intersection)
-
     def add_traffic_light(self, traffic_light: TrafficLight):
         """Add a traffic light to the intersection.
 

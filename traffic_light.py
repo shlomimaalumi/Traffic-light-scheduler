@@ -91,44 +91,44 @@ class TrafficLight:
         """
         return self.id
 
-    def can_work_with(self, other: 'TrafficLight') -> bool:
-        """Check if this TrafficLight can work with another TrafficLight.
-
-        Args:
-            other (TrafficLight): The other TrafficLight to check compatibility with.
-
-        Returns:
-            bool: True if the two traffic lights can work together, False otherwise.
-        """
-
-        def do_lines_intersect_in_x_range(line1: LineString, line2: LineString, x_min: float, x_max: float) -> bool:
-            """
-            Check if two lines intersect within a specific range of the x-axis.
-
-            Args:
-                line1 (LineString): The first line.
-                line2 (LineString): The second line.
-                x_min (float): The minimum x-coordinate value of the range.
-                x_max (float): The maximum x-coordinate value of the range.
-
-            Returns:
-                bool: True if the lines intersect within the specified x-axis range, False otherwise.
-            """
-            # Check if the bounding boxes of the lines intersect in the x-axis range
-            if line1 != line2 and line1.bounds[0] <= x_max and line1.bounds[2] >= x_min \
-                    and line2.bounds[0] <= x_max and line2.bounds[2] >= x_min:
-                # Perform an intersection check between the lines
-                return line1.intersects(line2)
-            return False
-
-        epsilon = 0.1
-
-        for passage1 in self.passages_allow:
-            for passage2 in other.get_passages():
-                line1, line2 = passage1.line, passage2.line
-                x_min = min(passage1.x_min, passage2.x_min) + epsilon
-                x_max = max(passage1.x_max, passage2.x_max) - epsilon
-
-                if do_lines_intersect_in_x_range(line1, line2, x_min, x_max):
-                    return False
-        return True
+    # def can_work_with(self, other: 'TrafficLight') -> bool:
+    #     """Check if this TrafficLight can work with another TrafficLight.
+    #
+    #     Args:
+    #         other (TrafficLight): The other TrafficLight to check compatibility with.
+    #
+    #     Returns:
+    #         bool: True if the two traffic lights can work together, False otherwise.
+    #     """
+    #
+    #     def do_lines_intersect_in_x_range(line1: LineString, line2: LineString, x_min: float, x_max: float) -> bool:
+    #         """
+    #         Check if two lines intersect within a specific range of the x-axis.
+    #
+    #         Args:
+    #             line1 (LineString): The first line.
+    #             line2 (LineString): The second line.
+    #             x_min (float): The minimum x-coordinate value of the range.
+    #             x_max (float): The maximum x-coordinate value of the range.
+    #
+    #         Returns:
+    #             bool: True if the lines intersect within the specified x-axis range, False otherwise.
+    #         """
+    #         # Check if the bounding boxes of the lines intersect in the x-axis range
+    #         if line1 != line2 and line1.bounds[0] <= x_max and line1.bounds[2] >= x_min \
+    #                 and line2.bounds[0] <= x_max and line2.bounds[2] >= x_min:
+    #             # Perform an intersection check between the lines
+    #             return line1.intersects(line2)
+    #         return False
+    #
+    #     epsilon = 0.1
+    #
+    #     for passage1 in self.passages_allow:
+    #         for passage2 in other.get_passages():
+    #             line1, line2 = passage1.line, passage2.line
+    #             x_min = min(passage1.x_min, passage2.x_min) + epsilon
+    #             x_max = max(passage1.x_max, passage2.x_max) - epsilon
+    #
+    #             if do_lines_intersect_in_x_range(line1, line2, x_min, x_max):
+    #                 return False
+    #     return True
