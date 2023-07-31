@@ -1,74 +1,46 @@
-import random
 from intersection import Intersection
 from traffic_light import TrafficLight
 from typing import List, Optional
 from enums import SchedulerType
+from single_random_scheduler import SingleRandomScheduler
+from random_scheduler import RandomScheduler
+from greedy_scheduler import GreedyScheduler
 
 
-class SimpleScheduler:
-    # nevigate_scheduler = {
-    #     SchedulerType.RANDOM_SCHEDULER: SimpleScheduler.random_scheduler,
-    #     SchedulerType.GREEDY_SCHEDULER: SimpleScheduler.greedy_scheduler
-    # }
+class Scheduler:
+    """A class for managing traffic light scheduling based on different scheduler types."""
+
+    navigate_scheduler = {
+        SchedulerType.SINGLE_RANDOM_SCHEDULER: SingleRandomScheduler.single_random_scheduler,
+        SchedulerType.RANDOM_SCHEDULER: RandomScheduler.random_scheduler,
+        SchedulerType.GREEDY_SCHEDULER: GreedyScheduler.greedy_scheduler
+    }
 
     def __init__(self, scheduler_type: SchedulerType):
-        """Initialize a scheduler object."""
+        """
+        Initialize a scheduler object.
+
+        Args:
+            scheduler_type (SchedulerType): The type of scheduler to use.
+        """
         self.scheduler_type = scheduler_type
 
     def decide_next_light(self, intersection: Intersection) -> Optional[List[TrafficLight]]:
-        """Decide which traffic light to switch on next based on the selected scheduler type.
+        """
+        Decide which traffic light(s) to switch on next based on the selected scheduler.
 
         Args:
             intersection (Intersection): The intersection where the traffic lights are located.
 
         Returns:
-            List[TrafficLight] or None: The next traffic light to switch on or None if no valid light is available.
+            List[TrafficLight] or None: The next traffic light(s) to switch on or None if no valid light is available.
         """
-        return self.get_scheduler_map().get(self.scheduler_type)(intersection)
-
-    @staticmethod
-    def get_scheduler_map():
-        """Return the scheduler function based on the selected scheduler type."""
-        return {
-            SchedulerType.SINGLE_RANDOM_SCHEDULER: SimpleScheduler.single_random_scheduler,
-            SchedulerType.RANDOM_SCHEDULER: SimpleScheduler.random_scheduler,
-            SchedulerType.GREEDY_SCHEDULER: SimpleScheduler.greedy_scheduler
-        }
-
-    @staticmethod
-    def single_random_scheduler(intersection: Intersection) -> Optional[List[TrafficLight]]:
-        """Decide which traffic light to switch on next based on a simple random selection.
-
-        Args:
-            intersection (Intersection): The intersection where the traffic lights are located.
-
-        Returns:
-            List[TrafficLight] or None: The next traffic light to switch on or None if no valid light is available.
-        """
-        light_traffics = intersection.get_all_traffic_lights()
-        return [random.choice(light_traffics)]
-
-    @staticmethod
-    def random_scheduler(intersection: Intersection) -> Optional[List[TrafficLight]]:
-        """Decide which traffic lights to switch on next based on a simple random selection and the lighters
-         that should work at the same time.
-
-        Args:
-            intersection (Intersection): The intersection where the traffic lights are located.
-
-        Returns:
-            List[TrafficLight] or None: The next traffic light to switch on or None if no valid light is available.
-        """
-        light_traffics = intersection.get_all_traffic_lights()
-        return [random.choice(light_traffics)]
-
-    @staticmethod
-    def greedy_scheduler(intersection: Intersection) -> Optional[List[TrafficLight]]:
-        pass
+        return Scheduler.navigate_scheduler[self.scheduler_type](intersection)
 
     @staticmethod
     def time_to_swap(intersection: Intersection) -> bool:
-        """Check if it's time to swap to the next traffic light.
+        """
+        Check if it's time to swap to the next traffic light.
 
         Args:
             intersection (Intersection): The intersection where the traffic lights are located.

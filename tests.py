@@ -1,7 +1,7 @@
 import unittest
 from traffic_light import TrafficLight, Passage
 from intersection import Intersection
-from scheduler import SimpleScheduler
+from scheduler import Scheduler
 from control_loop import ControlLoop
 from enums import TrafficLightState
 
@@ -15,7 +15,7 @@ class TestTrafficLightSystem(unittest.TestCase):
         self.traffic_light1 = TrafficLight([self.passage1, self.passage4])
         self.traffic_light2 = TrafficLight([self.passage2, self.passage3])
         self.intersection = Intersection([self.traffic_light1, self.traffic_light2])
-        self.scheduler = SimpleScheduler()
+        self.scheduler = Scheduler()
         self.control_loop = ControlLoop(self.intersection, self.scheduler)
 
     def test_traffic_light_states(self):
