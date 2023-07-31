@@ -14,7 +14,7 @@ class Intersection:
         self.currennt_green_traffic_lighters = []
         self.currennt_main_traffic_light = None
 
-    def get_current_green_light(self) -> TrafficLight or None:
+    def get_current_green_light(self) -> Optional[TrafficLight]:
         """Get the currently active green traffic light.
 
         Returns:

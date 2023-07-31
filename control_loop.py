@@ -1,5 +1,5 @@
 from intersection import Intersection  # Importing Intersection for type hinting
-from random_scheduler import SimpleScheduler  # Importing Scheduler for type hinting
+from scheduler import SimpleScheduler  # Importing Scheduler for type hinting
 
 
 class ControlLoop:

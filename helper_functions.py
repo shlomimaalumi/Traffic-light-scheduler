@@ -4,6 +4,17 @@ from shapely.geometry import LineString
 
 
 def can_work_together(list1: List[Passage], list2: List[Passage]) -> bool:
+    """
+    Check if two lists of passages can work together without any overlapping.
+
+    Args:
+        list1 (List[Passage]): The first list of passages.
+        list2 (List[Passage]): The second list of passages.
+
+    Returns:
+        bool: True if the two lists can work together without overlapping, False otherwise.
+    """
+
     def do_lines_intersect_in_x_range(line1: LineString, line2: LineString, x_min: float, x_max: float) -> bool:
         """
         Check if two lines intersect within a specific range of the x-axis.
@@ -24,14 +35,18 @@ def can_work_together(list1: List[Passage], list2: List[Passage]) -> bool:
             return line1.intersects(line2)
         return False
 
+    # A small epsilon value used to prevent floating-point inaccuracies
     epsilon = 0.0001
 
+    # Iterate over all combinations of passages from list1 and list2
     for passage1 in list1:
         for passage2 in list2:
             line1, line2 = passage1.line, passage2.line
+            # Calculate the start and end x-values for the intersection check
             start_x = max(passage1.x_min, passage2.x_min) + epsilon
             end_x = min(passage1.x_max, passage2.x_max) - epsilon
 
+            # If the lines intersect within the x-axis range, they cannot work together
             if do_lines_intersect_in_x_range(line1, line2, start_x, end_x):
                 return False
     return True

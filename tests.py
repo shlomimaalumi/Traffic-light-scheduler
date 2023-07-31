@@ -1,7 +1,7 @@
 import unittest
 from traffic_light import TrafficLight, Passage
 from intersection import Intersection
-from random_scheduler import SimpleScheduler
+from scheduler import SimpleScheduler
 from control_loop import ControlLoop
 from enums import TrafficLightState
 

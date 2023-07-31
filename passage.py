@@ -15,4 +15,3 @@ class Passage:
         self.line = line = LineString([source, target])
         self.x_min = min(source[0], target[0])
         self.x_max = max(source[0], target[0])
-
