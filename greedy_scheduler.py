@@ -2,7 +2,7 @@ from intersection import Intersection
 from traffic_light import TrafficLight
 from typing import List, Tuple
 
-
+#bug
 class GreedyScheduler:
     """
     A class that implements a greedy traffic light scheduling algorithm.
