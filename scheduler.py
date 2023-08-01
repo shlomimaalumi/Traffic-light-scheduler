@@ -57,4 +57,8 @@ class Scheduler:
         return not intersection.get_remaining_time() or intersection.get_remaining_time() <= 0
 
     def get_step_number(self) -> int:
+        """Get the step coutner of the scheduler.
+
+            Returns:
+                int: The number of the steps."""
         return self.step

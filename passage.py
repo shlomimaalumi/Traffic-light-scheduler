@@ -5,6 +5,10 @@ from time import time
 
 
 class Passage:
+    """A class representing a passage between two points.
+
+    Each passage is represented by a line segment between a source and a target point."""
+
     def __init__(self, source: Tuple[float, float], target: Tuple[float, float], rate=PassageJam.MEDIUM):
         """Initialize a new Passage object representing a line segment between two points.
 

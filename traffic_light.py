@@ -9,6 +9,11 @@ from functools import reduce
 
 
 class TrafficLight:
+    """
+    A class representing a traffic light at an intersection.
+
+    Each traffic light is associated with a set of passages, and it can control the flow of traffic
+    by changing its state between red and green."""
     counter = 1
 
     def __init__(self, passages: List[Passage]):

@@ -2,11 +2,16 @@ import copy
 from traffic_light import TrafficLight  # Importing TrafficLight for type hinting
 from typing import List, Optional
 from enums import TrafficLightState
-from passage import Passage
-from shapely.geometry import LineString
 
 
 class Intersection:
+    """
+        A class representing an intersection with multiple traffic lights.
+
+        Each intersection is associated with a list of traffic lights that control the flow of traffic.
+
+        Attributes:"""
+
     def __init__(self, traffic_lights: List[TrafficLight]):
         """Initialize an Intersection object with a list of traffic lights.
 
