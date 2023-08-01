@@ -2,7 +2,8 @@ import time
 from enums import TrafficLightState
 from passage import Passage
 from typing import List
-from shapely.geometry import LineString
+from functools import reduce
+# from intersection import Intersection
 
 
 class TrafficLight:
@@ -33,7 +34,7 @@ class TrafficLight:
         Args:
             duration (float): The duration for which the TrafficLight will remain green (in seconds).
         """
-        print(f"traffic light number: {self.id} being green in time: {time.time()} for {duration} seconds")
+        print(f"traffic light number: {self.id} being green")
         self.set_state(TrafficLightState.GREEN)
         self.begin_time = time.time()
         self.duration = duration
@@ -44,7 +45,7 @@ class TrafficLight:
         This method is called when the TrafficLight changes from green to red.
         """
         if self.state == TrafficLightState.GREEN:
-            print(f"traffic light number: {self.id} being red in time: {time.time()}")
+            print(f"traffic light number: {self.id} being red")
             self.set_state(TrafficLightState.RED)
             self.last_time_green = time.time()
 
@@ -91,6 +92,39 @@ class TrafficLight:
         """
         return self.id
 
+    @staticmethod
+    def passages_from_traffic_lights(traffic_lights: List['TrafficLight']) -> List[Passage]:
+        """
+        Get a list of passages from a list of traffic lights and merge them into a single list.
+
+        Args:
+            traffic_lights (List['TrafficLight']): A list of TrafficLight objects.
+
+        Returns:
+            List[Passage]: A list containing all the passages obtained from the traffic lights without duplicates.
+        """
+        passages = []
+        for tl in traffic_lights:
+            passages.append(tl.get_passages())
+        # Use reduce and set.union to merge all the sets into one list and remove duplicates
+        return list(reduce(set.union, map(set, passages)))
+
+
+
+    @staticmethod
+    def can_work_together(traffic_lights: List['TrafficLight']) -> bool:
+        """
+        Check if the traffic lights can work together without any overlapping passages.
+
+        Args:
+            traffic_lights (List[TrafficLight]): A list of TrafficLight objects.
+
+        Returns:
+            bool: True if the traffic lights can work together without overlapping passages, False otherwise.
+        """
+        passges_allowed = TrafficLight.passages_from_traffic_lights(traffic_lights)
+        return Passage.is_action_valid(passges_allowed)
+
     # def can_work_with(self, other: 'TrafficLight') -> bool:
     #     """Check if this TrafficLight can work with another TrafficLight.
     #
@@ -129,6 +163,6 @@ class TrafficLight:
     #             x_min = min(passage1.x_min, passage2.x_min) + epsilon
     #             x_max = max(passage1.x_max, passage2.x_max) - epsilon
     #
-    #             if do_lines_intersect_in_x_range(line1, line2, x_min, x_max):
+    #             if you do_lines_intersect_in_x_range(line1, line2, x_min, x_max):
     #                 return False
     #     return True

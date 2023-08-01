@@ -1,20 +1,23 @@
 import random
 from intersection import Intersection
 from traffic_light import TrafficLight
-from typing import List, Optional
+from typing import List, Tuple
 
 
 class SingleRandomScheduler:
 
     @staticmethod
-    def single_random_scheduler(intersection: Intersection) -> Optional[List[TrafficLight]]:
-        """Decide which traffic light to switch on next based on a simple random selection.
+    def single_random_scheduler(intersection: Intersection) -> Tuple[TrafficLight, List[TrafficLight]]:
+        """
+        Decide which traffic light to switch on next based on a simple random selection.
 
         Args:
             intersection (Intersection): The intersection where the traffic lights are located.
 
         Returns:
-            List[TrafficLight] or None: The next traffic light to switch on or None if no valid light is available.
+            Tuple[TrafficLight, List[TrafficLight]] or None: A tuple containing the main traffic light to make green
+            and a list with only the main traffic light. If no valid light is available, returns None.
         """
         light_traffics = intersection.get_all_traffic_lights()
-        return [random.choice(light_traffics)]
+        main_traffic_light = random.choice(light_traffics)
+        return main_traffic_light, [main_traffic_light]

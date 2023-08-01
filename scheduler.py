@@ -1,6 +1,6 @@
 from intersection import Intersection
 from traffic_light import TrafficLight
-from typing import List, Optional
+from typing import List, Tuple
 from enums import SchedulerType
 from single_random_scheduler import SingleRandomScheduler
 from random_scheduler import RandomScheduler
@@ -23,9 +23,10 @@ class Scheduler:
         Args:
             scheduler_type (SchedulerType): The type of scheduler to use.
         """
+        self.step = 0
         self.scheduler_type = scheduler_type
 
-    def decide_next_light(self, intersection: Intersection) -> Optional[List[TrafficLight]]:
+    def decide_next_light(self, intersection: Intersection) -> Tuple[TrafficLight, List[TrafficLight]]:
         """
         Decide which traffic light(s) to switch on next based on the selected scheduler.
 
@@ -33,8 +34,10 @@ class Scheduler:
             intersection (Intersection): The intersection where the traffic lights are located.
 
         Returns:
-            List[TrafficLight] or None: The next traffic light(s) to switch on or None if no valid light is available.
+            Tuple[TrafficLight, List[TrafficLight]] or None: A tuple containing the main traffic light to make green
+            and a list of other traffic lights to make green together. If no valid light is available, returns None.
         """
+        self.step += 1
         return Scheduler.navigate_scheduler[self.scheduler_type](intersection)
 
     @staticmethod
@@ -49,3 +52,6 @@ class Scheduler:
             bool: True if it's time to swap to the next traffic light, False otherwise.
         """
         return not intersection.get_remaining_time() or intersection.get_remaining_time() <= 0
+
+    def get_step_number(self) -> int:
+        return self.step
