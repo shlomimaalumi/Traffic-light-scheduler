@@ -17,5 +17,9 @@ class RandomScheduler:
         Returns:
             List[TrafficLight] or None: The next traffic light to switch on or None if no valid light is available.
         """
-        return
 
+        light_traffics = intersection.get_copy_all_traffic_lights()
+        main_traffic = random.choice(light_traffics)
+    @staticmethod
+    def max_scheduling(cur_light_traffics, ramaining_light_traffics):
+        for t
