@@ -7,7 +7,7 @@ from typing import List, Tuple
 class SingleRandomScheduler:
 
     @staticmethod
-    def single_random_scheduler(intersection: Intersection) -> Tuple[TrafficLight, List[TrafficLight]]:
+    def decide_next_step(intersection: Intersection) -> Tuple[TrafficLight, List[TrafficLight]]:
         """
         Decide which traffic light to switch on next based on a simple random selection.
 

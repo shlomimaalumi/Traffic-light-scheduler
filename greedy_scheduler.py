@@ -1,78 +1,36 @@
 from intersection import Intersection
 from traffic_light import TrafficLight
-from typing import List, Optional
+from typing import List, Tuple
 
 
 class GreedyScheduler:
 
     @staticmethod
-    def greedy_scheduler(intersection: Intersection) -> Optional[List[TrafficLight]]:
-        return
+    def decide_next_step(intersection: Intersection) -> Tuple[TrafficLight, List[TrafficLight], float]:
+        traffic_lights = intersection.get_copy_all_traffic_lights()
+        traffic_lights_sorted = sorted(traffic_lights, key=lambda tl: tl.get_traffic_light_jam(), reverse=True)
+        main_traffic_light = traffic_lights_sorted.pop(0)
 
-#
-# from dataclasses import dataclass
-# from enum import Enum
-#
-#
-# class TrafficLightState(Enum):
-#     RED = 0
-#     GREEN = 1
-#
-#
-# @dataclass(frozen=True)
-# class TrafficLightData:
-#     id: int
-#     state: TrafficLightState = TrafficLightState.RED
-#     jam: float = 0.0
-#     remaining_green: float = 0.0
-#     time_since_last_green: float = 0.0
-#
-#
-# class TrafficLight:
-#     def __init__(self, id) -> None:
-#         ...
-#
-#     def get_immutable_data(self) -> TrafficLightData:
-#         ...
-#
-#     def set_state(self, state: TrafficLightState) -> None:
-#         ...
-#
-#
-# @dataclass(frozen=True)
-# class IntersectionData:
-#     id: int
-#     traffic_lights: "list[TrafficLightData]"
-#
-#
-# class Intersection:
-#     def __init__(self, id, traffic_lights) -> None:
-#         ...
-#
-#     def get_immutable_data(self) -> IntersectionData:
-#         ...
-#
-#
-# class Controller:
-#     def __init__(self, algo, intersections: Intersection, steps: 'int | None' = None) -> None:
-#         self._steps = steps or float("inf")
-#         self._current_step = 0
-#
-#         self._algo = algo
-#         self._intersections = intersections
-#
-#     def run(self) -> None:
-#         while self._current_step < self._steps:
-#             self._current_step += 1
-#             self.step()
-#
-#     def step(self) -> None:
-#         action = self._algo.decide(self._intersections.get_immutable_data())
-#         assert self.is_action_valid(action), "Got invalid action from algo"
-#         self._apply_action(action)
-#
-#     def _apply_action(self, action) -> None:
-#         ...
-#
-#     def is_action_valid(self, action):
-#         ...
+        next_lights = GreedyScheduler.max_scheduling([main_traffic_light], traffic_lights_sorted)
+        # duration = main_traffic_light.average_jam_time()
+        duration = GreedyScheduler.calculate_duration(traffic_lights_sorted)
+        return main_traffic_light, next_lights, duration
+
+    @staticmethod
+    def calculate_duration( traffic_lights: List[TrafficLight]) -> float:
+        lst = []
+        val=0
+        for index, tl in enumerate(traffic_lights):
+            for p in tl.passages_allow:
+                if p not in lst:
+                    lst.append(p)
+                    val += (len(traffic_lights)-index) * 0.5*p.rate.value
+        return val
+
+    @staticmethod
+    def max_scheduling(cur_light_traffics: List[TrafficLight], remaining_light_traffics: List[TrafficLight]) -> List[TrafficLight]:
+        for tl in remaining_light_traffics:
+            optional_addition = cur_light_traffics + [tl]
+            if TrafficLight.can_work_together(optional_addition):
+                cur_light_traffics = optional_addition
+        return cur_light_traffics

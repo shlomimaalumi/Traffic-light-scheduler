@@ -1,8 +1,10 @@
-import time
+from time import time
 from enums import TrafficLightState
 from passage import Passage
 from typing import List
 from functools import reduce
+
+
 # from intersection import Intersection
 
 
@@ -16,7 +18,7 @@ class TrafficLight:
         TrafficLight.counter += 1
         self.state = TrafficLightState.RED
         self.traffic_jam = 0
-        self.begin_time = time.time()
+        self.begin_time = time()
         self.duration = 0
         self.last_time_green = 0
 
@@ -34,9 +36,9 @@ class TrafficLight:
         Args:
             duration (float): The duration for which the TrafficLight will remain green (in seconds).
         """
-        print(f"traffic light number: {self.id} being green")
+        print(f"traffic light number: {self.id} being green for: {duration}")
         self.set_state(TrafficLightState.GREEN)
-        self.begin_time = time.time()
+        self.begin_time = time()
         self.duration = duration
 
     def red_on(self):
@@ -47,7 +49,9 @@ class TrafficLight:
         if self.state == TrafficLightState.GREEN:
             print(f"traffic light number: {self.id} being red")
             self.set_state(TrafficLightState.RED)
-            self.last_time_green = time.time()
+            self.last_time_green = time()
+            for p in self.passages_allow:
+                p.update_time()
 
     def get_traffic_jam(self) -> int:
         """Get the traffic jam status of the TrafficLight.
@@ -79,10 +83,27 @@ class TrafficLight:
         Returns:
             float: The current duration of the green light (in seconds).
         """
-        return time.time() - self.begin_time
+        return time() - self.begin_time
 
     def get_passages(self) -> List[Passage]:
         return self.passages_allow
+
+    def average_jam_time(self) -> float:
+        """
+        Calculate the average jam time for the intersection.
+
+        The average jam time is computed by summing the product of each passage's rate
+        and the time elapsed since it was last open, and then dividing it by the total rate of all passages.
+
+        Returns:
+            float: The average jam time for the intersection.
+        """
+        rate = 0
+        val = 0
+        for p in self.passages_allow:
+            val += p.rate.value * p.time_from_last_open()
+            rate += p.rate.value
+        return val / (rate*rate)
 
     def get_id(self) -> int:
         """Get the ID of the TrafficLight.
@@ -91,6 +112,21 @@ class TrafficLight:
             int: The ID of the TrafficLight.
         """
         return self.id
+
+    def get_traffic_light_jam(self) -> float:
+        """
+        Calculate the traffic light jam value for the current intersection.
+
+        The traffic light jam value is computed as the sum of the product of each passage's rate
+        and the time elapsed since it was last open.
+
+        Returns:
+            float: The traffic light jam value for the current intersection.
+        """
+        val = 0
+        for p in self.passages_allow:
+            val += p.rate.value * p.time_from_last_open()
+        return val
 
     @staticmethod
     def passages_from_traffic_lights(traffic_lights: List['TrafficLight']) -> List[Passage]:
@@ -108,8 +144,6 @@ class TrafficLight:
             passages.append(tl.get_passages())
         # Use reduce and set.union to merge all the sets into one list and remove duplicates
         return list(reduce(set.union, map(set, passages)))
-
-
 
     @staticmethod
     def can_work_together(traffic_lights: List['TrafficLight']) -> bool:

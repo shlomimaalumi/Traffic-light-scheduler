@@ -11,9 +11,9 @@ class Scheduler:
     """A class for managing traffic light scheduling based on different scheduler types."""
 
     navigate_scheduler = {
-        SchedulerType.SINGLE_RANDOM_SCHEDULER: SingleRandomScheduler.single_random_scheduler,
-        SchedulerType.RANDOM_SCHEDULER: RandomScheduler.random_scheduler,
-        SchedulerType.GREEDY_SCHEDULER: GreedyScheduler.greedy_scheduler
+        SchedulerType.SINGLE_RANDOM_SCHEDULER: SingleRandomScheduler,
+        SchedulerType.RANDOM_SCHEDULER: RandomScheduler,
+        SchedulerType.GREEDY_SCHEDULER: GreedyScheduler
     }
 
     def __init__(self, scheduler_type: SchedulerType):
@@ -26,7 +26,7 @@ class Scheduler:
         self.step = 0
         self.scheduler_type = scheduler_type
 
-    def decide_next_light(self, intersection: Intersection) -> Tuple[TrafficLight, List[TrafficLight]]:
+    def decide_next_light(self, intersection: Intersection) -> Tuple[TrafficLight, List[TrafficLight], float]:
         """
         Decide which traffic light(s) to switch on next based on the selected scheduler.
 
@@ -38,7 +38,10 @@ class Scheduler:
             and a list of other traffic lights to make green together. If no valid light is available, returns None.
         """
         self.step += 1
-        return Scheduler.navigate_scheduler[self.scheduler_type](intersection)
+        result = Scheduler.navigate_scheduler[self.scheduler_type].decide_next_step(intersection)
+        if len(result) == 2:
+            return result + (0,)  # the duration decided on the init of the system
+        return result
 
     @staticmethod
     def time_to_swap(intersection: Intersection) -> bool:

@@ -1,20 +1,43 @@
 from typing import Tuple, List
 from shapely.geometry import LineString
+from enums import PassageJam
+from time import time
 
 
 class Passage:
-    def __init__(self, source: Tuple[float, float], target: Tuple[float, float]):
+    def __init__(self, source: Tuple[float, float], target: Tuple[float, float], rate=PassageJam.MEDIUM):
         """Initialize a new Passage object representing a line segment between two points.
 
         Args:
             source (Tuple[float, float]): The coordinates of the source point (x, y).
             target (Tuple[float, float]): The coordinates of the target point (x, y).
+            rate: the importance of this passage.
         """
         self.source = source
         self.target = target
+        self.rate = rate
         self.line = line = LineString([source, target])
         self.x_min = min(source[0], target[0])
         self.x_max = max(source[0], target[0])
+        self.last_open = time()
+
+    def update_time(self):
+        """
+        Update the last_open attribute with the current timestamp.
+
+        This method is called to record the current time as the last time the traffic light was opened.
+        It updates the last_open attribute with the current timestamp using the time() function from the time module.
+        """
+        self.last_open = time()
+
+    def time_from_last_open(self):
+        """
+        Calculate the time elapsed since the traffic light was last opened.
+
+        Returns:
+            float: The time elapsed (in seconds) since the traffic light was last opened.
+        """
+        return time() - self.last_open
 
     @classmethod
     def do_lines_intersect_in_x_range(cls, line1: LineString, line2: LineString, x_min: float, x_max: float) -> bool:
