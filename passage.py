@@ -108,4 +108,3 @@ class Passage:
                 if p2.source != p1.source and not Passage.can_work_together([p1], [p2]):
                     return False
         return True
-

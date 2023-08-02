@@ -34,4 +34,3 @@ class SingleRandomScheduler:
         main_traffic_light = random.choice(light_traffics)
         return main_traffic_light, [main_traffic_light]
 # documantations
-

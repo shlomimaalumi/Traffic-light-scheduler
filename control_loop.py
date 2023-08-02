@@ -61,4 +61,3 @@ class ControlLoop:
                 print(f"*******iteration number {self.scheduler.get_step_number()} in time: {int(time.time())}********")
                 duration = self.duration if next_lights[2] == 0 else next_lights[2]
                 self.intersection.greens_on_for(next_lights[1], next_lights[0], duration)
-

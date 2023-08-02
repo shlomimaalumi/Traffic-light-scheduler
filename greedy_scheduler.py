@@ -90,4 +90,3 @@ class GreedyScheduler:
             if TrafficLight.can_work_together(optional_addition):
                 cur_light_traffics = optional_addition
         return cur_light_traffics
-

@@ -128,4 +128,3 @@ class Intersection:
                 if p.id == id:
                     self.crosswalk_val = 1
                     return
-

@@ -210,5 +210,3 @@ class TrafficLight:
     #             if you do_lines_intersect_in_x_range(line1, line2, x_min, x_max):
     #                 return False
     #     return True
-
-

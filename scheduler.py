@@ -62,4 +62,3 @@ class Scheduler:
             Returns:
                 int: The number of the steps."""
         return self.step
-
