@@ -2,7 +2,7 @@ from intersection import Intersection
 from traffic_light import TrafficLight
 from typing import List, Tuple
 
-#bug
+
 class GreedyScheduler:
     """
     A class that implements a greedy traffic light scheduling algorithm.
@@ -40,7 +40,7 @@ class GreedyScheduler:
                 - A list of other traffic lights that can work together without conflicts.
                 - The duration for which the main traffic light should remain green.
         """
-        traffic_lights = intersection.get_copy_all_traffic_lights()
+        traffic_lights = intersection.get_all_traffic_lights()[:]
         traffic_lights_sorted = sorted(traffic_lights, key=lambda tl: tl.get_traffic_light_jam(), reverse=True)
         main_traffic_light = traffic_lights_sorted.pop(0)
 

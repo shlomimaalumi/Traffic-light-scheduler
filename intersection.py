@@ -21,14 +21,15 @@ class Intersection:
         self.traffic_lights = traffic_lights
         self.currennt_green_traffic_lighters = []
         self.currennt_main_traffic_light = None
+        self.crosswalk_val = 0
 
-    def get_current_green_light(self) -> Optional[TrafficLight]:
+    def get_current_green_light(self) -> Optional[List[TrafficLight]]:
         """Get the currently active green traffic light.
 
         Returns:
             TrafficLight or None: The currently active green traffic light or None if there is no active green light.
         """
-        return self.currennt_main_traffic_light
+        return self.currennt_green_traffic_lighters
 
     def set_state_to_traffic_light(self, light_traffic: TrafficLight, state: TrafficLightState):
         """Set the state of a specific traffic light.
@@ -57,6 +58,7 @@ class Intersection:
 
     def make_current_lighters_red(self):
         """Set the currently active green traffic light and its associated traffic lights to red."""
+        self.crosswalk_val = 0
         for light in self.currennt_green_traffic_lighters:
             light.red_on()
         self.currennt_green_traffic_lighters = []
@@ -70,7 +72,6 @@ class Intersection:
         if light_traffic not in self.traffic_lights:
             raise ValueError('Not a valid traffic light to switch to red.')
         light_traffic.red_on()
-        # self.set_state_to_traffic_light(light_traffic, TrafficLightState.RED)
 
     def make_currnet_traffic_light_red(self):
         """Set the currently active green traffic light to red."""
@@ -119,4 +120,11 @@ class Intersection:
         """
         if not self.currennt_main_traffic_light:
             return
-        return self.currennt_main_traffic_light.get_remaining_duration()
+        return self.currennt_main_traffic_light.get_remaining_duration() - self.crosswalk_val
+
+    def crosswalk_button(self, id):
+        for t in self.currennt_green_traffic_lighters:
+            for p in t.passages_allow:
+                if p.id == id:
+                    self.crosswalk_val = 1
+                    return

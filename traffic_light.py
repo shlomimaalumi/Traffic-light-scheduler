@@ -19,8 +19,8 @@ class TrafficLight:
     def __init__(self, passages: List[Passage]):
         """Initialize a new TrafficLight object."""
         self.id = TrafficLight.counter
-        self.passages_allow = passages
         TrafficLight.counter += 1
+        self.passages_allow = passages
         self.state = TrafficLightState.RED
         self.traffic_jam = 0
         self.begin_time = time()
@@ -108,7 +108,7 @@ class TrafficLight:
         for p in self.passages_allow:
             val += p.rate.value * p.time_from_last_open()
             rate += p.rate.value
-        return val / (rate*rate)
+        return val / (rate * rate)
 
     def get_id(self) -> int:
         """Get the ID of the TrafficLight.
@@ -129,7 +129,12 @@ class TrafficLight:
             float: The traffic light jam value for the current intersection.
         """
         val = 0
+        i = 0
         for p in self.passages_allow:
+            i += 1
+            # time_from_last = p.time_from_last_open()
+            # val += p.rate.value * time_from_last
+            # print(f"id: {self.id}, passage {i} from last: {time_from_last} val= {val}")
             val += p.rate.value * p.time_from_last_open()
         return val
 

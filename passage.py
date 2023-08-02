@@ -1,13 +1,14 @@
 from typing import Tuple, List
 from shapely.geometry import LineString
 from enums import PassageJam
-from time import time
+import time
 
 
 class Passage:
     """A class representing a passage between two points.
 
     Each passage is represented by a line segment between a source and a target point."""
+    counter = 1
 
     def __init__(self, source: Tuple[float, float], target: Tuple[float, float], rate=PassageJam.MEDIUM):
         """Initialize a new Passage object representing a line segment between two points.
@@ -17,31 +18,33 @@ class Passage:
             target (Tuple[float, float]): The coordinates of the target point (x, y).
             rate: the importance of this passage.
         """
+        self.id = Passage.counter
+        Passage.counter += 1
         self.source = source
         self.target = target
         self.rate = rate
         self.line = line = LineString([source, target])
         self.x_min = min(source[0], target[0])
         self.x_max = max(source[0], target[0])
-        self.last_open = time()
+        self.last_open = time.time()
 
     def update_time(self):
         """
         Update the last_open attribute with the current timestamp.
 
-        This method is called to record the current time as the last time the traffic light was opened.
+        This method is called to record the current time as the last time the passage was opened.
         It updates the last_open attribute with the current timestamp using the time() function from the time module.
         """
-        self.last_open = time()
+        self.last_open = time.time()
 
     def time_from_last_open(self):
         """
-        Calculate the time elapsed since the traffic light was last opened.
+        Calculate the time elapsed since the passage was last opened.
 
         Returns:
-            float: The time elapsed (in seconds) since the traffic light was last opened.
+            float: The time elapsed (in seconds) since the passage was last opened.
         """
-        return time() - self.last_open
+        return time.time() - self.last_open
 
     @classmethod
     def do_lines_intersect_in_x_range(cls, line1: LineString, line2: LineString, x_min: float, x_max: float) -> bool:
@@ -77,10 +80,6 @@ class Passage:
             bool: True if the two lists can work together without overlapping, False otherwise.
         """
 
-        # A small epsilon value used to prevent floating-point inaccuracies
-        # epsilon = 0.0001
-
-        # Iterate over all combinations of passages from list1 and list2
         for passage1 in list1:
             for passage2 in list2:
                 line1, line2 = passage1.line, passage2.line
