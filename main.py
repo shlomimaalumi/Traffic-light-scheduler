@@ -22,3 +22,4 @@ if __name__ == '__main__':
     intersection = Intersection([t1, t2, t3, t4])
     run = ControlLoop(intersection, scheduler, 3)
     run.run()
+
